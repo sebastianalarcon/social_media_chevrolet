@@ -1,0 +1,21 @@
+<%= form_for(@registry) do |f| %>
+  <% if @registry.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@registry.errors.count, "error") %> prohibited this registry from being saved:</h2>
+
+      <ul>
+      <% @registry.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :last_registry %><br>
+    <%= f.date_select :last_registry %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

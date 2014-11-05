@@ -1,0 +1,44 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Id media:</strong>
+  <%= @medium.id_media %>
+</p>
+
+<p>
+  <strong>User:</strong>
+  <%= @medium.user %>
+</p>
+
+<p>
+  <strong>Text:</strong>
+  <%= @medium.text %>
+</p>
+
+<p>
+  <strong>Image url:</strong>
+  <%= @medium.image_url %>
+</p>
+
+<p>
+  <strong>Approve state:</strong>
+  <%= @medium.approve_state %>
+</p>
+
+<p>
+  <strong>Show state:</strong>
+  <%= @medium.show_state %>
+</p>
+
+<p>
+  <strong>Social net origin:</strong>
+  <%= @medium.social_net_origin %>
+</p>
+
+<p>
+  <strong>Media created at:</strong>
+  <%= @medium.media_created_at %>
+</p>
+
+<%= link_to 'Edit', edit_medium_path(@medium) %> |
+<%= link_to 'Back', media_path %>

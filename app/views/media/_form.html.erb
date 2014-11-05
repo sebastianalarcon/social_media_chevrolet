@@ -1,0 +1,49 @@
+<%= form_for(@medium) do |f| %>
+  <% if @medium.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@medium.errors.count, "error") %> prohibited this medium from being saved:</h2>
+
+      <ul>
+      <% @medium.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :id_media %><br>
+    <%= f.text_field :id_media %>
+  </div>
+  <div class="field">
+    <%= f.label :user %><br>
+    <%= f.text_field :user %>
+  </div>
+  <div class="field">
+    <%= f.label :text %><br>
+    <%= f.text_field :text %>
+  </div>
+  <div class="field">
+    <%= f.label :image_url %><br>
+    <%= f.text_field :image_url %>
+  </div>
+  <div class="field">
+    <%= f.label :approve_state %><br>
+    <%= f.text_field :approve_state %>
+  </div>
+  <div class="field">
+    <%= f.label :show_state %><br>
+    <%= f.text_field :show_state %>
+  </div>
+  <div class="field">
+    <%= f.label :social_net_origin %><br>
+    <%= f.text_field :social_net_origin %>
+  </div>
+  <div class="field">
+    <%= f.label :media_created_at %><br>
+    <%= f.date_select :media_created_at %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

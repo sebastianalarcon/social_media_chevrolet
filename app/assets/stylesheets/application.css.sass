@@ -1,0 +1,42 @@
+/*
+ * This is a manifest file that'll be compiled into application.css, which will include all the files
+ * listed below.
+ *
+ * Any CSS and SCSS file within this directory, lib/assets/stylesheets, vendor/assets/stylesheets,
+ * or vendor/assets/stylesheets of plugins, if any, can be referenced here using a relative path.
+ *
+ * You're free to add application-wide styles to this file and they'll appear at the bottom of the
+ * compiled file so the styles you add here take precedence over styles defined in any styles
+ * defined in the other CSS/SCSS files in this directory. It is generally better to create a new
+ * file per style scope.
+ *
+ *= require_tree .
+ *= require_self
+ *= require foundation_and_overrides
+
+ */
+@font-face
+	font-family: chevroletFont
+	src: url(/assets/fonts/LouisRegular.otf)
+
+@font-face
+	font-family: chevroletIcon
+	src: url(/assets/fonts/icomoon.ttf)
+
+body *
+	font-family: chevroletFont !important
+
+*:focus, *:active, *:visited
+	outline: none
+
+.header
+	padding: 0.7rem 0
+	-webkit-box-shadow: -1px 1px 24px 5px rgba(0,0,0,0.75)
+	-moz-box-shadow: -1px 1px 24px 5px rgba(0,0,0,0.75)
+	box-shadow: -1px 1px 24px 5px rgba(0,0,0,0.75)
+
+.main_container
+	padding: 5rem
+
+.header h4.title
+	font-family: chevroletFont
