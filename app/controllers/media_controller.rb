@@ -21,6 +21,12 @@ class MediaController < ApplicationController
   def edit
   end
 
+
+
+  def getmedia
+
+  end
+  
   # POST /media
   # POST /media.json
   def create

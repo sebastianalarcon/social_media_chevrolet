@@ -54,4 +54,4 @@ gem 'pry-remote'
 
 gem 'pry-stack_explorer'
 
-gem 'pry-debugger'
+gem 'pry-debugger', platform: [:ruby_19]
