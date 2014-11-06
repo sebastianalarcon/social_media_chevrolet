@@ -55,3 +55,5 @@ gem 'pry-remote'
 gem 'pry-stack_explorer'
 
 gem 'pry-debugger', platform: [:ruby_19]
+
+gem 'whenever', :require => false

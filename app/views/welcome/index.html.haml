@@ -1,18 +1,21 @@
+.loader
+	%h2
+		Cargando        	
+
+.row.alert.alert-box{:data => {"alert" => ""}}
+	.large-12.columns.text-center
+
 .ask#ask_button
 	Solicitar
 
 %dl.tabs{:data => { "tab" =>""}}
 	%dd.active
-		%a{:href => "#panel1"}
+		%a{:href => "#paneltwitter"}
 			Twitter
 	%dd
-		%a{:href => "#panel2"}
+		%a{:href => "#panelinstagram"}
 			Instagram
 
 .tabs-content
-	.content.active#panel1
-		%p
-			Lo que sea
-	.content#panel2
-		%p
-			Lo que sea 2
+	.content.active#paneltwitter
+	.content#panelinstagram

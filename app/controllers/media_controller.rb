@@ -21,12 +21,54 @@ class MediaController < ApplicationController
   def edit
   end
 
-
-
-  def getmedia
-
+  # POST /media/get_media.json
+  def get_media
+    @media_to_show = Array.new
+    @media_to_show = Medium.where("approve_state = ? AND show_state = ?", "Por Aprobación", "No Mostrado").order(created_at: :desc)
+    respond_to do |format|
+      format.json { render json: @media_to_show } 
+    end
   end
   
+  # POST /media/approve_media
+  def approve_media
+    id = params[:id]
+    origin = params[:origin]
+    media=Medium.find_by("id_media = ? AND social_net_origin =?", id, origin)
+    media.approve_state = "Aprobado"
+    respond_to do |format|
+      if (media.save)
+        format.html {render json: "Completo"}
+      else
+        format.html {render json: "Error"}
+      end
+    end
+  end
+
+  def disapprove_media
+    id = params[:id]
+    origin = params[:origin]
+    media=Medium.find_by("id_media = ? AND social_net_origin =?", id, origin)
+    media.approve_state = "No Aprobado"
+    respond_to do |format|
+      if (media.save)
+        format.html {render json: "Completo"}
+      else
+        format.html {render json: "Error"}
+      end
+    end
+  end
+
+
+  def show_media
+    @media_to_show = Array.new
+    @media_to_show = Medium.where("approve_state = ? AND show_state = ?", "Aprobado", "No Mostrado")
+    respond_to do |format|
+      format.html { }
+      format.json { render json: @media_to_show } 
+    end
+  end
+
   # POST /media
   # POST /media.json
   def create

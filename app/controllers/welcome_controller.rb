@@ -1,11 +1,11 @@
 class WelcomeController < ApplicationController
 	def index
-		call_media()
+		call_media_first_time()
 	end
 
-	def call_media
+	def call_media_first_time
 		if($first_time == true)
-			$client.search("#bogota", :result_type => "recent").take(20).each do |tweet|
+			$client.search("#sunny", :result_type => "all").take(50).each do |tweet|
 				id= tweet.id
 				text = tweet.text
 				user = tweet.user.screen_name
@@ -13,10 +13,13 @@ class WelcomeController < ApplicationController
 				image.slice!("_normal")
 				date = tweet.created_at
 				newmedia= Medium.new(id_media:id, user:user, text:text, image_url:image, approve_state:"Por Aprobación", show_state:"No Mostrado",social_net_origin:"Twitter",media_created_at:date)
-				newmedia.save
+				begin
+					newmedia.save
+				rescue
+				end
 			end
 
-			@instagram = Instagram.tag_recent_media("bogota").each do |insta|
+			@instagram = Instagram.tag_recent_media("sunny").each do |insta|
 				image = insta.images.standard_resolution.url
 				if(insta.caption!=nil)
 					text = insta.caption.text
@@ -28,9 +31,19 @@ class WelcomeController < ApplicationController
 				id = insta.id
 				date = Time.at(insta.created_time.to_i)
 				newmedia= Medium.new(id_media:id, user:user, text:text, image_url:image, approve_state:"Por Aprobación", show_state:"No Mostrado",social_net_origin:"Instagram",media_created_at:date)
-				newmedia.save
+				begin
+					newmedia.save
+				rescue			
+				end
 			end
 
+			if(Registry.last ==nil)
+				last= Registry.new(last_registry:Time.now)
+			else
+				last= Registry.last
+				last.last_registry = Time.now
+			end
+			last.save
 			$first_time=false
 		end
 	end

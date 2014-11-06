@@ -1,4 +1,7 @@
 Rails.application.routes.draw do
+
+  get 'media/show_media', to: "media#show_media", as: "media/show_media"
+  
   resources :registries
 
   resources :media
@@ -59,4 +62,11 @@ Rails.application.routes.draw do
   #   end
 
   root 'welcome#index'
+
+  post 'media/get_media', to: "media#get_media", as: "media/get_media"
+
+  post 'media/approve_media', to: "media#approve_media", as: "media/approve_media"
+
+  post 'media/disapprove_media', to: "media#disapprove_media", as: "media/disapprove_media"
+
 end

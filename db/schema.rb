@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141105220111) do
+ActiveRecord::Schema.define(version: 20141106153053) do
 
   create_table "media", force: true do |t|
     t.string   "id_media"
@@ -29,7 +29,7 @@ ActiveRecord::Schema.define(version: 20141105220111) do
   add_index "media", ["id_media", "social_net_origin"], name: "index_media_on_id_media_and_social_net_origin", unique: true
 
   create_table "registries", force: true do |t|
-    t.date     "last_registry"
+    t.datetime "last_registry"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
