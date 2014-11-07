@@ -69,6 +69,15 @@ class MediaController < ApplicationController
     end
   end
 
+  def media_showed
+    @media_showed = Array.new
+    @media_showed = Medium.where("approve_state = ? AND show_state = ?", "Aprobado", "Mostrado")
+    respond_to do |format|
+      format.html { }
+      format.json { render json: @media_showed } 
+    end
+  end
+  
   # POST /media
   # POST /media.json
   def create
