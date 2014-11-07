@@ -5,6 +5,7 @@ class WelcomeController < ApplicationController
 
 	def call_media_first_time
 		if($first_time == true)
+			#$client.search("#", :result_type => "all").take(50).each do |tweet|
 			$client.search("#sunny", :result_type => "all").take(50).each do |tweet|
 				id= tweet.id
 				text = tweet.text
@@ -18,7 +19,7 @@ class WelcomeController < ApplicationController
 				rescue
 				end
 			end
-
+			#@instagram = Instagram.tag_recent_media("").each do |insta|
 			@instagram = Instagram.tag_recent_media("sunny").each do |insta|
 				image = insta.images.standard_resolution.url
 				if(insta.caption!=nil)

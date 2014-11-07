@@ -13,105 +13,177 @@ $(document).on 'ready page:load', ->
 			success : success
 
 
+	centercontent = (container, content, xadjustment, yadjustment) ->
+		if $.isWindow(container[0])		
+			container_width = container.innerWidth()
+			container_height = container.innerHeight()
+		else
+			container_width = container.width()
+			container_height = container.height()
+
+		content_width = content.width()
+		content_height = content.height()
+
+		position_x = container_width/2 - content_width/2 + xadjustment
+		position_y = container_height/2 - content_height/2 + yadjustment
+
+		content.css({"top":position_y,"left":position_x})
+
+	buildgrid = (x1,x2,y1,y2,container,idgrid, classtoadd) ->
+		for i in [x1...x2]
+			container.append("<div class='grid "+classtoadd+"' id=column"+i+"></div>")
+			for j in [y1...y2]
+				$("#column"+i).append("<div class='cellblock' id="+idgrid+"></div>")
+				idgrid+=1
+		return idgrid
+
+
+	findemptygrid = ->
+		doit = true
+		idgrid = 1
+		while doit
+			a = $(".corbatin .grid").children("#"+idgrid)
+			if a.children().length == 0
+				doit = false
+				console.log a
+				return a
+			idgrid+=1
+
+
+	animatephoto = ->
+		a=findemptygrid()
+		$old = $('.panelmediatoshow .columns.large-5 img')
+		#First we copy the arrow to the new table cell and get the offset to the document
+		$new = $old.clone().appendTo("#"+a.attr('id'));
+		newOffset = $new.offset();
+		#Get the old position relative to document
+		oldOffset = $old.offset();
+		#we also clone old to the document for the animation
+		$temp = $old.clone().appendTo('body');
+		#hide new and old and move $temp to position
+		#also big z-index, make sure to edit this to something that works with the page
+		$temp
+			.css('position', 'absolute')
+			.css('left', oldOffset.left)
+			.css('top', oldOffset.top)
+			.css('z-index', 1000);
+		$new.hide();
+		$old.hide();
+		#animate the $temp to the position of the new img
+		$temp.animate( {'top': newOffset.top, 'left':newOffset.left, 'width':"128px", 'height':"128px"}, 'slow', ->
+			#callback function, we remove $old and $temp and show $new
+			$new.show()
+			$old.remove()
+			$temp.remove()
+		)
+		$(".panelmediatoshow").fadeOut()
+
 	if window.location.pathname == "/media/show_media"
 		$(".header").remove()
-		panelheight= $(".panelmediatoshow").height()
-		panelwidth= $(".panelmediatoshow").width()
-		$(".panelmediatoshow").css("top",(window.innerHeight/2)-(panelheight/2))
-		$(".panelmediatoshow").css("left",(window.innerWidth/2)-(panelwidth/2))
-		
+		centercontent($(window), $(".panelmediatoshow"),-40,-40)
 		$(".main_container").append("<div class='corbatin'></div>")
-		idgrid=1
-		for i in [1...11]
-			$(".corbatin").append("<div class='grid vertical_moved' id=column"+i+"></div>")
-			for j in [0...4]
-				$("#column"+i).append("<div class='cellblock' id="+idgrid+"></div>")
-				idgrid+=1
+		idgrid = 1
+		idgrid = buildgrid(1,11,0,4, $(".corbatin"),idgrid, "vertical_moved")
+		idgrid = buildgrid(12,23,1,11, $(".corbatin"),idgrid, "")
+		idgrid = buildgrid(23,34,0,4, $(".corbatin"),idgrid, "vertical_moved")
+		centercontent($(window), $(".corbatin"),-64,-128)
 
-		for i in [12...23]
-			$(".corbatin").append("<div class='grid' id=column"+i+"></div>")
-			for j in [1...11]
-				$("#column"+i).append("<div class='cellblock' id="+idgrid+"></div>")
-				idgrid+=1
-
-		for i in [23...34]
-			$(".corbatin").append("<div class='grid vertical_moved' id=column"+i+"></div>")
-			for j in [1...5]
-				$("#column"+i).append("<div class='cellblock' id="+idgrid+"></div>")
-				idgrid+=1
 		
-
-		corbatinheight= $(".corbatin").height()
-		corbatinwidth= $(".corbatin").width()
-		$(".corbatin").css("top",(window.innerHeight/2)-(corbatinheight/2)-128)
-		$(".corbatin").css("left",(window.innerWidth/2)-(corbatinwidth/2)-64)
-
-
 		success = ( json ) ->
-		#	idgrid = 1
-			console.log json[0]
-			#$(json).each (index,object) ->
-			$(".panelmediatoshow").html("")
-			$(".panelmediatoshow").append(
-				"<div class='row'>"+
-					"<div class='columns large-7'>"+
-						"<p class='media_text'>"+
-							json[0].text+
-						"</p>"+
-					"</div>"+
-					"<div class='columns large-5'>"+
-						"<img src='"+json[0].image_url+"'>"+
-					"</div>"+
-				"</div>"
-				)
-			$(".panelmediatoshow").show( "scale", {}, 2000, -> 
-				setTimeout (->
-					$old = $('.panelmediatoshow .columns.large-5 img');
+
+			TimersJS.multi 3000, json.length, ((repetition) ->
+				console.log json.length
+				if json[repetition].social_net_origin == "Twitter"
+					$(".panelmediatoshow").html("")	
+					$(".panelmediatoshow").addClass("twitter")
+					$(".panelmediatoshow").append(
+						"<div class='row'>"+
+							"<div class='columns large-2 text-center'>"+
+								"<img class='social' src='/assets/tw.png'>"+
+							"</div>"+
+							"<div class='columns large-5 text-center'>"+
+								"<h2 class='text-center'>@"+json[repetition].user+"</h2>"+
+								"<img class='media_image' src='"+json[repetition].image_url+"'>"+						
+							"</div>"+
+							"<div class='columns large-5'>"+
+								"<p class='media_text'>"+
+									json[repetition].text+
+								"</p>"+
+							"</div>"+
+						"</div>"
+					)
+
+					$(".panelmediatoshow").show()
+					centercontent($(".panelmediatoshow .columns.large-5"), $(".media_text"),0,0)
+					centercontent($(".panelmediatoshow .columns.large-5"), $(".media_image"),0,0)
+					centercontent($(".panelmediatoshow .columns.large-2"), $(".social"),0,0)
+					$(".panelmediatoshow").addClass("animated zoomIn")				
+				else
+					$(".panelmediatoshow").html("")	
+					$(".panelmediatoshow").addClass("instagram")
+					$(".panelmediatoshow").append(
+						"<div class='row'>"+
+							"<div class='columns large-2 text-center'>"+
+								"<img class='social' src='/assets/ig.png'>"+
+							"</div>"+
+							"<div class='columns large-5 text-center'>"+
+								"<h2 class='text-center'>"+json[repetition].user+"</h2>"+
+								"<img class='media_image' src='"+json[repetition].image_url+"'>"+						
+							"</div>"+
+							"<div class='columns large-5'>"+
+								"<p class='media_text'>"+
+									json[repetition].text+
+								"</p>"+
+							"</div>"+
+						"</div>"
+					)
+
+					$(".panelmediatoshow").show()
+					centercontent($(".panelmediatoshow .columns.large-5"), $(".media_text"),0,0)
+					centercontent($(".panelmediatoshow .columns.large-5"), $(".media_image"),0,0)
+					centercontent($(".panelmediatoshow .columns.large-2"), $(".social"),0,0)
+					$(".panelmediatoshow").addClass("animated zoomIn")			
+				
+
+				TimersJS.timer 2100, (delta, now) ->
+					$(".panelmediatoshow").fadeOut()
+
+				TimersJS.timer 2500, (delta, now) ->
+					a=findemptygrid()
+					$old = $('.panelmediatoshow .columns.large-5 img.media_image')
 					#First we copy the arrow to the new table cell and get the offset to the document
-					$new = $old.clone().appendTo('#1');
+					$new = $old.clone().appendTo("#"+a.attr('id'));
 					newOffset = $new.offset();
 					#Get the old position relative to document
 					oldOffset = $old.offset();
 					#we also clone old to the document for the animation
+
 					$temp = $old.clone().appendTo('body');
 					#hide new and old and move $temp to position
 					#also big z-index, make sure to edit this to something that works with the page
+
 					$temp
-					  .css('position', 'absolute')
-					  .css('left', oldOffset.left)
-					  .css('top', oldOffset.top)
-					  .css('zIndex', 1000);
+						.css('position', 'absolute')
+						.css('left', oldOffset.left)
+						.css('top', oldOffset.top)
+						.css('z-index', 1000)
+						.css('width',"128px")
+						.css('height',"128px")
 					$new.hide();
 					$old.hide();
+
 					#animate the $temp to the position of the new img
-					$temp.animate( {'top': newOffset.top, 'left':newOffset.left, 'width':"128px", 'height':"128px"}, 'slow', ->
-					   #callback function, we remove $old and $temp and show $new
-					   $new.show()
-					   $old.remove()
-					   $temp.remove()
+					
+					$temp.animate( {'top': newOffset.top, 'left':newOffset.left, 'width':"128px", 'height':"128px"}, "slow", ->
+						#callback function, we remove $old and $temp and show $new
+						$new.show()
+						$old.remove()
+						$temp.remove()
 					)
-					$(".panelmediatoshow").fadeOut()
-				), 1000
-
-
-				)
-
-			
-
-			
-		#		doit = true
-		#		while doit
-		#			a = $(".corbatin .grid").children("#"+idgrid)
-		#			console.log("a: "+a)
-		#			if a.children().length == 0
-		#				a.append("<img src='"+object.image_url+"'>")
-		#				doit = false
-		#			
-		#			idgrid+=1
+					
+			), ->
+				console.log "The multi timer is complete"
 
 		data = {}
 
 		ajax("/media/show_media.json","GET", data, success)
-
-
-
