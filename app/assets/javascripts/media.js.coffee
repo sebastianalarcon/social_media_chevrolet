@@ -12,6 +12,16 @@ $(document).on 'ready page:load', ->
 				console.log "AJAX Error:"+textStatus
 			success : success
 
+	ajax1 = (url,type,data,success)->
+		$.ajax
+			url: url
+			type: type
+			dataType: 'text'
+			data: data
+			error : (jqXHR, textStatus, errorThrown) ->
+				console.log "AJAX Error:"+textStatus
+			success : success
+
 
 	centercontent = (container, content, xadjustment, yadjustment) ->
 		if $.isWindow(container[0])		
@@ -45,38 +55,79 @@ $(document).on 'ready page:load', ->
 			a = $(".corbatin .grid").children("#"+idgrid)
 			if a.children().length == 0
 				doit = false
-				console.log a
 				return a
 			idgrid+=1
 
 
 	animatephoto = ->
-		a=findemptygrid()
-		$old = $('.panelmediatoshow .columns.large-5 img')
+		a= findemptygrid()
+		$old = $('.panelmediatoshow .columns.large-5 img.media_image')
 		#First we copy the arrow to the new table cell and get the offset to the document
 		$new = $old.clone().appendTo("#"+a.attr('id'));
 		newOffset = $new.offset();
 		#Get the old position relative to document
 		oldOffset = $old.offset();
 		#we also clone old to the document for the animation
+
 		$temp = $old.clone().appendTo('body');
 		#hide new and old and move $temp to position
 		#also big z-index, make sure to edit this to something that works with the page
+
 		$temp
 			.css('position', 'absolute')
 			.css('left', oldOffset.left)
 			.css('top', oldOffset.top)
-			.css('z-index', 1000);
+			.css('z-index', 1000)
+			.css('width',"128px")
+			.css('height',"128px")
 		$new.hide();
 		$old.hide();
+
 		#animate the $temp to the position of the new img
-		$temp.animate( {'top': newOffset.top, 'left':newOffset.left, 'width':"128px", 'height':"128px"}, 'slow', ->
+		
+		$temp.animate( {'top': newOffset.top, 'left':newOffset.left, 'width':"128px", 'height':"128px"}, "slow", ->
 			#callback function, we remove $old and $temp and show $new
 			$new.show()
 			$old.remove()
 			$temp.remove()
+			
+			data ={
+				id: $new.data("media-id"),
+				origin: $new.data("origin")
+			}
+
+			success = ( text ) ->
+
+			error = (jqXHR, textStatus, errorThrown) ->
+
+			ajax1("/media/showed","POST", data, success)
 		)
-		$(".panelmediatoshow").fadeOut()
+
+	showpanel  = (type, icon, user, id, origin, image, text)->
+		$(".panelmediatoshow").html("")	
+		$(".panelmediatoshow").addClass(type)
+		$(".panelmediatoshow").append(
+			"<div class='row'>"+
+				"<div class='columns large-2 text-center'>"+
+					"<img class='social' src='/assets/"+icon+".png'>"+
+				"</div>"+
+				"<div class='columns large-5 text-center'>"+
+					"<h2 class='text-center'>"+user+"</h2>"+
+					"<img class='media_image' data-media-id="+id+" data-origin="+origin+" src='"+image+"'>"+						
+				"</div>"+
+				"<div class='columns large-5'>"+
+					"<p class='media_text'>"+
+						text+
+					"</p>"+
+				"</div>"+
+			"</div>"
+		)
+		$(".panelmediatoshow").show()
+		centercontent($(".panelmediatoshow .columns.large-5"), $(".media_text"),0,0)
+		centercontent($(".panelmediatoshow .columns.large-5"), $(".media_image"),0,0)
+		centercontent($(".panelmediatoshow .columns.large-2"), $(".social"),0,0)
+		$(".panelmediatoshow").addClass("animated zoomIn")				
+
 
 	if window.location.pathname == "/media/show_media"
 		$(".header").remove()
@@ -88,98 +139,28 @@ $(document).on 'ready page:load', ->
 		idgrid = buildgrid(23,34,0,4, $(".corbatin"),idgrid, "vertical_moved")
 		centercontent($(window), $(".corbatin"),-64,-128)
 
-		
 		success = ( json ) ->
+			$(json).each (index,object) ->
+				$("#"+(index+1)).append("<img class='media_image' src='"+object["image_url"]+"'>")
 
+		data = {}
+
+		ajax("/media/media_showed.json","GET", data, success)
+
+
+		success = ( json ) ->
 			TimersJS.multi 3000, json.length, ((repetition) ->
-				console.log json.length
 				if json[repetition].social_net_origin == "Twitter"
-					$(".panelmediatoshow").html("")	
-					$(".panelmediatoshow").addClass("twitter")
-					$(".panelmediatoshow").append(
-						"<div class='row'>"+
-							"<div class='columns large-2 text-center'>"+
-								"<img class='social' src='/assets/tw.png'>"+
-							"</div>"+
-							"<div class='columns large-5 text-center'>"+
-								"<h2 class='text-center'>@"+json[repetition].user+"</h2>"+
-								"<img class='media_image' src='"+json[repetition].image_url+"'>"+						
-							"</div>"+
-							"<div class='columns large-5'>"+
-								"<p class='media_text'>"+
-									json[repetition].text+
-								"</p>"+
-							"</div>"+
-						"</div>"
-					)
-
-					$(".panelmediatoshow").show()
-					centercontent($(".panelmediatoshow .columns.large-5"), $(".media_text"),0,0)
-					centercontent($(".panelmediatoshow .columns.large-5"), $(".media_image"),0,0)
-					centercontent($(".panelmediatoshow .columns.large-2"), $(".social"),0,0)
-					$(".panelmediatoshow").addClass("animated zoomIn")				
+					showpanel("twitter","tw","@"+json[repetition].user, json[repetition].id_media, json[repetition].social_net_origin, json[repetition].image_url, json[repetition].text)
 				else
-					$(".panelmediatoshow").html("")	
-					$(".panelmediatoshow").addClass("instagram")
-					$(".panelmediatoshow").append(
-						"<div class='row'>"+
-							"<div class='columns large-2 text-center'>"+
-								"<img class='social' src='/assets/ig.png'>"+
-							"</div>"+
-							"<div class='columns large-5 text-center'>"+
-								"<h2 class='text-center'>"+json[repetition].user+"</h2>"+
-								"<img class='media_image' src='"+json[repetition].image_url+"'>"+						
-							"</div>"+
-							"<div class='columns large-5'>"+
-								"<p class='media_text'>"+
-									json[repetition].text+
-								"</p>"+
-							"</div>"+
-						"</div>"
-					)
-
-					$(".panelmediatoshow").show()
-					centercontent($(".panelmediatoshow .columns.large-5"), $(".media_text"),0,0)
-					centercontent($(".panelmediatoshow .columns.large-5"), $(".media_image"),0,0)
-					centercontent($(".panelmediatoshow .columns.large-2"), $(".social"),0,0)
-					$(".panelmediatoshow").addClass("animated zoomIn")			
-				
+					showpanel("instagram","ig",json[repetition].user, json[repetition].id_media, json[repetition].social_net_origin ,json[repetition].image_url, json[repetition].text)
 
 				TimersJS.timer 2100, (delta, now) ->
 					$(".panelmediatoshow").fadeOut()
 
 				TimersJS.timer 2500, (delta, now) ->
-					a=findemptygrid()
-					$old = $('.panelmediatoshow .columns.large-5 img.media_image')
-					#First we copy the arrow to the new table cell and get the offset to the document
-					$new = $old.clone().appendTo("#"+a.attr('id'));
-					newOffset = $new.offset();
-					#Get the old position relative to document
-					oldOffset = $old.offset();
-					#we also clone old to the document for the animation
-
-					$temp = $old.clone().appendTo('body');
-					#hide new and old and move $temp to position
-					#also big z-index, make sure to edit this to something that works with the page
-
-					$temp
-						.css('position', 'absolute')
-						.css('left', oldOffset.left)
-						.css('top', oldOffset.top)
-						.css('z-index', 1000)
-						.css('width',"128px")
-						.css('height',"128px")
-					$new.hide();
-					$old.hide();
-
-					#animate the $temp to the position of the new img
-					
-					$temp.animate( {'top': newOffset.top, 'left':newOffset.left, 'width':"128px", 'height':"128px"}, "slow", ->
-						#callback function, we remove $old and $temp and show $new
-						$new.show()
-						$old.remove()
-						$temp.remove()
-					)
+					animatephoto()
+					$(".panelmediatoshow").removeClass("twitter instagram")
 					
 			), ->
 				console.log "The multi timer is complete"

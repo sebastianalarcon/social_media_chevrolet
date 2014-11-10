@@ -59,10 +59,25 @@ class MediaController < ApplicationController
     end
   end
 
+  def showed
+    id = params[:id]
+    origin = params[:origin]
+    media=Medium.find_by("id_media = ? AND social_net_origin =?", id, origin)
+    media.show_state = "Mostrado"
+    respond_to do |format|
+      if (media.save)
+        format.html {render json: "Completo"}
+      else
+        format.html {render json: "Error"}
+      end
+    end
+  end
+
 
   def show_media
     @media_to_show = Array.new
     @media_to_show = Medium.where("approve_state = ? AND show_state = ?", "Aprobado", "No Mostrado")
+    @media_to_show = @media_to_show.shuffle
     respond_to do |format|
       format.html { }
       format.json { render json: @media_to_show } 
