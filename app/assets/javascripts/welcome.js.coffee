@@ -21,12 +21,14 @@ $(document).on 'ready page:load', ->
 			error : error
 			success : success
 
+	addtotab = (type) ->
+
+
 	$("#ask_button").on "click", ->
 		$('.content').html("")
 		$(".loader").fadeIn()
 		data={}
 		success = ( json ) ->
-			console.log json
 			setTimeout (->
 				$(".loader").fadeOut()	
 			), 1500
@@ -49,48 +51,32 @@ $(document).on 'ready page:load', ->
 					"</div>"
 					)
 				$(json).each (index,object) ->
+					paneltab=""
 					if object["social_net_origin"] == "Twitter"
-						$('#paneltwitter').append(
-							"<div class='row'>"+
-								"<div class='columns large-6'>"+
-									"<p>"+object["text"]+"</p>"+
-								"</div>"+
-								"<div class='columns large-2'>"+
-									"<img class='image_content' src='"+object["image_url"]+"''>"+
-								"</div>"+
-								"<div class='columns large-2'>"+
-									"<div class='btn_admin approve text-center' data-media-id="+object["id_media"]+" data-origin="+object["social_net_origin"]+">"+
-										"<p>Aprobar</p>"+
-									"</div>"+
-								"</div>"+
-								"<div class='columns large-2'>"+
-									"<div class='btn_admin disapprove text-center' data-media-id="+object["id_media"]+" data-origin="+object["social_net_origin"]+">"+
-										"<p>No Aprobar</p>"+
-									"</div>"+
-								"</div>"+
-							"</div>"
-							)
+						paneltab = $('#paneltwitter')
 					else
-						$('#panelinstagram').append(
-							"<div class='row'>"+
-								"<div class='columns large-6'>"+
-									"<p>"+object["text"]+"</p>"+
+						paneltab = $('#panelinstagram')
+
+					paneltab.append(
+						"<div class='row'>"+
+							"<div class='columns large-6'>"+
+								"<p>"+object["text"]+"</p>"+
+							"</div>"+
+							"<div class='columns large-2'>"+
+								"<img class='image_content' src='"+object["image_url"]+"''>"+
+							"</div>"+
+							"<div class='columns large-2'>"+
+								"<div class='btn_admin approve text-center' data-media-id="+object["id_media"]+" data-origin="+object["social_net_origin"]+">"+
+									"<p>Aprobar</p>"+
 								"</div>"+
-								"<div class='columns large-2'>"+
-									"<img class='image_content' src='"+object["image_url"]+"''>"+
+							"</div>"+
+							"<div class='columns large-2'>"+
+								"<div class='btn_admin disapprove text-center' data-media-id="+object["id_media"]+" data-origin="+object["social_net_origin"]+">"+
+									"<p>No Aprobar</p>"+
 								"</div>"+
-								"<div class='columns large-2'>"+
-									"<div class='btn_admin approve text-center' data-media-id="+object["id_media"]+" data-origin="+object["social_net_origin"]+">"+
-										"<p>Aprobar</p>"+
-									"</div>"+
-								"</div>"+
-								"<div class='columns large-2'>"+
-									"<div class='btn_admin disapprove text-center' data-media-id="+object["id_media"]+" data-origin="+object["social_net_origin"]+">"+
-										"<p>No Aprobar</p>"+
-									"</div>"+
-								"</div>"+
-							"</div>"
-							)
+							"</div>"+
+						"</div>"
+						)
 
 
 		ajax("media/get_media.json","POST", data, success)

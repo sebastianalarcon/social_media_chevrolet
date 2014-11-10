@@ -122,6 +122,11 @@ $(document).on 'ready page:load', ->
 				"</div>"+
 			"</div>"
 		)
+		if type=="twitter"
+			a= $(".media_text").text().replace('#cmcdeveloper', '<span style="color:#2AB1EC;">#cmcdeveloper</span>')
+		else
+			a= $(".media_text").text().replace('#cmcdeveloper', '<span style="color:#36609F;">#cmcdeveloper</span>')
+		$(".media_text").html(a)
 		$(".panelmediatoshow").show()
 		centercontent($(".panelmediatoshow .columns.large-5"), $(".media_text"),0,0)
 		centercontent($(".panelmediatoshow .columns.large-5"), $(".media_image"),0,0)
@@ -149,6 +154,8 @@ $(document).on 'ready page:load', ->
 
 
 		success = ( json ) ->
+
+
 			TimersJS.multi 3000, json.length, ((repetition) ->
 				if json[repetition].social_net_origin == "Twitter"
 					showpanel("twitter","tw","@"+json[repetition].user, json[repetition].id_media, json[repetition].social_net_origin, json[repetition].image_url, json[repetition].text)

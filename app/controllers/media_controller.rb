@@ -23,6 +23,7 @@ class MediaController < ApplicationController
 
   # POST /media/get_media.json
   def get_media
+    Medium.save_media
     @media_to_show = Array.new
     @media_to_show = Medium.where("approve_state = ? AND show_state = ?", "Por Aprobación", "No Mostrado").order(created_at: :desc)
     respond_to do |format|
