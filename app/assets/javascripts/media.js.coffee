@@ -2,6 +2,46 @@
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://coffeescript.org/
 $(document).on 'ready page:load', ->
+
+	testpanel = ->
+		# ------------------------- This code is for testing ------------------------------------- #
+
+		success = ( json ) ->
+			$(".panelmediatoshow").html("")	
+			$(".panelmediatoshow").addClass("twitter")
+			$(".panelmediatoshow").append(
+				"<div class='row'>"+
+					"<div class='columns large-2 text-center'>"+
+						"<img class='social' src='/assets/tw.png'>"+
+					"</div>"+
+					"<div class='columns large-5 text-center'>"+
+						"<div class='image_parent_container'>"+
+							"<div class='image_container'>"+
+								"<img class='media_image' src='"+json[0].image_url+"'>"+
+							"</div>"+
+						"</div>"+
+					"</div>"+
+					"<div class='columns large-5'>"+
+						"<h2 class='text-center'>"+json[0].user+"</h2>"+
+						"<p class='media_text text-justify'>"+
+							json[0].text.substring(0,139)+
+						"</p>"+
+					"</div>"+
+				"</div>"
+			)
+			a= $(".media_text").text().replace(hashtag, '<span style="color:#2AB1EC;">'+hashtag+'</span>')
+			$(".media_text").html(a)
+			centercontent($(".panelmediatoshow .columns.large-2"), $(".social"),0,0)
+			$(".panelmediatoshow").show()
+					
+		data = {}
+
+		ajax("/media/show_media.json","GET", data, success)
+
+		#---------------------------------------------------------------------------------------------#
+
+
+	hashtag = "#sunny"
 	ajax = (url,type,data,success)->
 		$.ajax
 			url: url
@@ -112,38 +152,56 @@ $(document).on 'ready page:load', ->
 					"<img class='social' src='/assets/"+icon+".png'>"+
 				"</div>"+
 				"<div class='columns large-5 text-center'>"+
-					"<h2 class='text-center'>"+user+"</h2>"+
-					"<img class='media_image' data-media-id="+id+" data-origin="+origin+" src='"+image+"'>"+						
+					"<div class='image_parent_container'>"+
+						"<div class='image_container'>"+
+							"<img class='media_image' data-media-id="+id+" data-origin="+origin+" src='"+image+"'>"+
+						"</div>"+
+					"</div>"+
 				"</div>"+
 				"<div class='columns large-5'>"+
-					"<p class='media_text'>"+
-						text+
+					"<h2 class='text-center'>"+user+"</h2>"+
+					"<p class='media_text text-justify'>"+
+						text.substring(0,139)+
 					"</p>"+
 				"</div>"+
 			"</div>"
 		)
 		if type=="twitter"
-			a= $(".media_text").text().replace('#cmcdeveloper', '<span style="color:#2AB1EC;">#cmcdeveloper</span>')
+			a= $(".media_text").text().replace(hashtag, '<span style="color:#2AB1EC;">'+hashtag+'</span>')
 		else
-			a= $(".media_text").text().replace('#cmcdeveloper', '<span style="color:#36609F;">#cmcdeveloper</span>')
+			a= $(".media_text").text().replace(hashtag, '<span style="color:#36609F;">'+hashtag+'</span>')
 		$(".media_text").html(a)
 		$(".panelmediatoshow").show()
-		centercontent($(".panelmediatoshow .columns.large-5"), $(".media_text"),0,0)
-		centercontent($(".panelmediatoshow .columns.large-5"), $(".media_image"),0,0)
+		#centercontent($(".panelmediatoshow .columns.large-5"), $(".media_text"),0,0)
+		#centercontent($(".panelmediatoshow .columns.large-5"), $(".media_image"),0,0)
 		centercontent($(".panelmediatoshow .columns.large-2"), $(".social"),0,0)
 		$(".panelmediatoshow").addClass("animated zoomIn")				
+
+	animatepromo = ->
+		$(".promo span").addClass("twitter")
+		top= $("#151").offset().top
+		$(".promo").css("top",top)
+		$(".promo").fadeIn()
+		$(".promo").animate({'right':"4750px"}, 8000, ->
+			$(".promo span").removeClass("twitter")
+			$(".promo").html("Instagram <span>#findnewroads</span>")
+			$(".promo span").addClass("instagram")
+			TimersJS.timer 2000, (delta, now) ->
+				$(".promo").animate({'right':"-492px"}, 8000, ->
+					$(".promo").fadeOut()
+				)
+		)
 
 
 	if window.location.pathname == "/media/show_media"
 		$(".header").remove()
-		centercontent($(window), $(".panelmediatoshow"),-40,-40)
+		centercontent($(window), $(".panelmediatoshow"),-15,80)
 		$(".main_container").append("<div class='corbatin'></div>")
 		idgrid = 1
 		idgrid = buildgrid(1,11,0,4, $(".corbatin"),idgrid, "vertical_moved")
 		idgrid = buildgrid(12,23,1,11, $(".corbatin"),idgrid, "")
 		idgrid = buildgrid(23,34,0,4, $(".corbatin"),idgrid, "vertical_moved")
 		centercontent($(window), $(".corbatin"),-64,-128)
-
 		success = ( json ) ->
 			$(json).each (index,object) ->
 				$("#"+(index+1)).append("<img class='media_image' src='"+object["image_url"]+"'>")
@@ -153,25 +211,27 @@ $(document).on 'ready page:load', ->
 		ajax("/media/media_showed.json","GET", data, success)
 
 
-		success = ( json ) ->
+		$("#startanimation").on "click", ->
+			success = ( json ) ->
+				TimersJS.multi 3000, json.length, ((repetition) ->
+					if json[repetition].social_net_origin == "Twitter"
+						showpanel("twitter","tw","@"+json[repetition].user, json[repetition].id_media, json[repetition].social_net_origin, json[repetition].image_url, json[repetition].text)
+					else
+						showpanel("instagram","ig",json[repetition].user, json[repetition].id_media, json[repetition].social_net_origin ,json[repetition].image_url, json[repetition].text)
 
+					TimersJS.timer 2100, (delta, now) ->
+						$(".panelmediatoshow").fadeOut()
 
-			TimersJS.multi 3000, json.length, ((repetition) ->
-				if json[repetition].social_net_origin == "Twitter"
-					showpanel("twitter","tw","@"+json[repetition].user, json[repetition].id_media, json[repetition].social_net_origin, json[repetition].image_url, json[repetition].text)
-				else
-					showpanel("instagram","ig",json[repetition].user, json[repetition].id_media, json[repetition].social_net_origin ,json[repetition].image_url, json[repetition].text)
-
-				TimersJS.timer 2100, (delta, now) ->
-					$(".panelmediatoshow").fadeOut()
-
-				TimersJS.timer 2500, (delta, now) ->
-					animatephoto()
-					$(".panelmediatoshow").removeClass("twitter instagram")
+					TimersJS.timer 2500, (delta, now) ->
+						animatephoto()
+						$(".panelmediatoshow").removeClass("twitter instagram")
+						
+				), ->
+					console.log "The multi timer is complete"
+					animatepromo()
 					
-			), ->
-				console.log "The multi timer is complete"
+			data = {}
 
-		data = {}
-
-		ajax("/media/show_media.json","GET", data, success)
+			ajax("/media/show_media.json","GET", data, success)
+		
+		#testpanel()

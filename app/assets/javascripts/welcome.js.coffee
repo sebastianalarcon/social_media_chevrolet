@@ -51,7 +51,7 @@ $(document).on 'ready page:load', ->
 					"</div>"
 					)
 				$(json).each (index,object) ->
-					paneltab=""
+					paneltab = ""
 					if object["social_net_origin"] == "Twitter"
 						paneltab = $('#paneltwitter')
 					else
@@ -83,63 +83,67 @@ $(document).on 'ready page:load', ->
 
 		
 	$('.content').on 'click','.approve' , ->
-		self = $(this)
-		data ={
-			id: $(this).data("media-id"),
-			origin: $(this).data("origin")
-		}
+		r = confirm("¿Está seguro que quiere APROBAR este contenido?")
+		if r == true
+			self = $(this)
+			data ={
+				id: $(this).data("media-id"),
+				origin: $(this).data("origin")
+			}
 
-		success = ( text ) ->
-			if text == "Completo"
-				self.parents(".row").fadeOut()
-				setTimeout (->
-					self.parents(".row").remove()
-				), 1000
+			success = ( text ) ->
+				if text == "Completo"
+					self.parents(".row").fadeOut()
+					setTimeout (->
+						self.parents(".row").remove()
+					), 1000
 
-				$(".alert div").html("Contenido Aprobado Satisfactoriamente")
-				$("body").animate({ scrollTop: 0 }, "slow");
-				$(".alert").fadeIn()
-				setTimeout (->
-					$(".alert").fadeOut()
-				), 2000
-		error = (jqXHR, textStatus, errorThrown) ->
-			if textStatus == "Error"
-				$(".alert div").html("Se ha presentado un error")
-				$("body").animate({ scrollTop: 0 }, "slow");
-				$(".alert").fadeIn()
-				setTimeout (->
-					$(".alert").fadeOut()
-				), 2000
+					$(".alert div").html("Contenido Aprobado Satisfactoriamente")
+					$("body").animate({ scrollTop: 0 }, "slow");
+					$(".alert").fadeIn()
+					setTimeout (->
+						$(".alert").fadeOut()
+					), 2000
+			error = (jqXHR, textStatus, errorThrown) ->
+				if textStatus == "Error"
+					$(".alert div").html("Se ha presentado un error")
+					$("body").animate({ scrollTop: 0 }, "slow");
+					$(".alert").fadeIn()
+					setTimeout (->
+						$(".alert").fadeOut()
+					), 2000
 
-		ajax1("media/approve_media","POST", data, success, error)
+			ajax1("media/approve_media","POST", data, success, error)
 
 	$('.content').on 'click','.disapprove' , ->
-		self = $(this)
-		data ={
-			id: $(this).data("media-id"),
-			origin: $(this).data("origin")
-		}
-		success = ( text ) ->
-			if text == "Completo"
-				self.parents(".row").fadeOut()
-				setTimeout (->
-					self.parents(".row").remove()
-				), 1000
+		r = confirm("¿Está seguro que quiere NO APROBAR este contenido?")
+		if r == true
+			self = $(this)
+			data ={
+				id: $(this).data("media-id"),
+				origin: $(this).data("origin")
+			}
+			success = ( text ) ->
+				if text == "Completo"
+					self.parents(".row").fadeOut()
+					setTimeout (->
+						self.parents(".row").remove()
+					), 1000
 
-				$(".alert div").html("Contenido No Aprobado Satisfactoriamente")
-				$("body").animate({ scrollTop: 0 }, "slow");
-				$(".alert").fadeIn()
-				setTimeout (->
-					$(".alert").fadeOut()
-				), 2000
-		error = (jqXHR, textStatus, errorThrown) ->
-			if textStatus == "Error"
-				$(".alert div").html("Se ha presentado un error")
-				$("body").animate({ scrollTop: 0 }, "slow");
-				$(".alert").fadeIn()
-				setTimeout (->
-					$(".alert").fadeOut()
-				), 2000
-		ajax1("media/disapprove_media","POST", data, success, error)
+					$(".alert div").html("Contenido No Aprobado Satisfactoriamente")
+					$("body").animate({ scrollTop: 0 }, "slow");
+					$(".alert").fadeIn()
+					setTimeout (->
+						$(".alert").fadeOut()
+					), 2000
+			error = (jqXHR, textStatus, errorThrown) ->
+				if textStatus == "Error"
+					$(".alert div").html("Se ha presentado un error")
+					$("body").animate({ scrollTop: 0 }, "slow");
+					$(".alert").fadeIn()
+					setTimeout (->
+						$(".alert").fadeOut()
+					), 2000
+			ajax1("media/disapprove_media","POST", data, success, error)
 
 	$("#ask_button").trigger("click")

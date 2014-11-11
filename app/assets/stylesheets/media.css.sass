@@ -27,11 +27,13 @@
 	z-index: 9999
 	display: none
 
-.panelmediatoshow.twitter h2
+.panelmediatoshow h2
+	margin-right: 3rem
+
+.panelmediatoshow.twitter h2, .promo span.twitter
 	color: #2AB1EC
 
-
-.panelmediatoshow.instagram h2
+.panelmediatoshow.instagram h2, .promo span.instagram
 	color: #36609F
 
 .panelmediatoshow .row
@@ -70,3 +72,42 @@
 .panelmediatoshow .columns.large-5.imagen
 	padding: 5rem 0
 	overflow: hidden
+
+.animation.large-3
+	padding: 0
+
+.btn_animation
+	background: url("btn.png") no-repeat
+	background-size: cover
+	cursor: pointer
+	padding: 1.5rem
+
+.image_parent_container
+	display: table
+	height: 100%
+	width: 100%
+
+.image_container
+	display: table-cell
+	vertical-align: middle
+
+.promo
+	height: 512px
+	width: 1100px
+	position: absolute
+	border: 1px solid gray
+	right: -492px
+	z-index: 9999999999999
+	background: white
+	font-size: 60pt
+	line-height: 6
+	padding: 0 3rem
+	display: none
+
+
+.row.start
+	max-width: none
+
+.row.start .btn_animation p
+	font-size: 30pt
+	line-height: 1

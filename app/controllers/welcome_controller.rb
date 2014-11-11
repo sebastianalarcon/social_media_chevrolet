@@ -5,12 +5,11 @@ class WelcomeController < ApplicationController
 
 	def call_media_first_time
 		if($first_time == true)
-			#$client.search("#", :result_type => "all").take(50).each do |tweet|
 
 			if(Registry.last !=nil)
 				registry = Registry.last
 				last_update= registry.last_registry
-				$client.search("#cmcdeveloper", :result_type => "all").take(50).each do |tweet|
+				$client.search("#"+$ht, :result_type => "all").take(50).each do |tweet|
 					id= tweet.id
 					text = tweet.text
 					user = tweet.user.screen_name
@@ -27,7 +26,7 @@ class WelcomeController < ApplicationController
 					end
 				end
 
-				@instagram = Instagram.tag_recent_media("cmcdeveloper").each do |insta|
+				@instagram = Instagram.tag_recent_media($ht).each do |insta|
 					image = insta.images.standard_resolution.url
 					if(insta.caption!=nil)
 						text = insta.caption.text
@@ -48,7 +47,7 @@ class WelcomeController < ApplicationController
 					end
 				end
 			else
-				$client.search("#cmcdeveloper", :result_type => "all").take(50).each do |tweet|
+				$client.search("#"+$ht, :result_type => "all").take(50).each do |tweet|
 					id= tweet.id
 					text = tweet.text
 					user = tweet.user.screen_name
@@ -61,8 +60,7 @@ class WelcomeController < ApplicationController
 					rescue
 					end
 				end
-				#@instagram = Instagram.tag_recent_media("").each do |insta|
-				@instagram = Instagram.tag_recent_media("cmcdeveloper").each do |insta|
+				@instagram = Instagram.tag_recent_media($ht).each do |insta|
 					image = insta.images.standard_resolution.url
 					if(insta.caption!=nil)
 						text = insta.caption.text

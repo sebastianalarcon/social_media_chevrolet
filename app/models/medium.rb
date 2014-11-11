@@ -5,7 +5,7 @@ class Medium < ActiveRecord::Base
 			registry = Registry.last
 			last_update= registry.last_registry
 		end
-		$client.search("#cmcdeveloper", :result_type => "all").take(50).each do |tweet|
+		$client.search("#"+$ht, :result_type => "all").take(50).each do |tweet|
 			id= tweet.id
 			text = tweet.text
 			user = tweet.user.screen_name
@@ -23,7 +23,7 @@ class Medium < ActiveRecord::Base
 			end
 		end
 
-		@instagram = Instagram.tag_recent_media("cmcdeveloper").each do |insta|
+		@instagram = Instagram.tag_recent_media($ht).each do |insta|
 			image = insta.images.standard_resolution.url
 			if(insta.caption!=nil)
 				text = insta.caption.text
