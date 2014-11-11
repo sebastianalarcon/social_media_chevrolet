@@ -2,6 +2,9 @@
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://coffeescript.org/
 $(document).on 'ready page:load', ->
+	window.idfullgrid = 1
+	hashtag = "#sunny"
+	#hashtag = "#FindnewRoads"
 
 	testpanel = ->
 		# ------------------------- This code is for testing ------------------------------------- #
@@ -41,7 +44,6 @@ $(document).on 'ready page:load', ->
 		#---------------------------------------------------------------------------------------------#
 
 
-	hashtag = "#sunny"
 	ajax = (url,type,data,success)->
 		$.ajax
 			url: url
@@ -92,17 +94,29 @@ $(document).on 'ready page:load', ->
 		doit = true
 		idgrid = 1
 		while doit
+			console.log idgrid
 			a = $(".corbatin .grid").children("#"+idgrid)
-			if a.children().length == 0
+			if a.children().length == 0 && idgrid<197
+				
 				doit = false
-				return a
+			else if a.children().length == 0 && idgrid >= 197
+				a = "Full"
+				doit = false
 			idgrid+=1
-
-
+		return a
+			
 	animatephoto = ->
 		a= findemptygrid()
+		if a == "Full"
+			if window.idfullgrid == 197
+				window.idfullgrid = 1
+			
+			a = $(".corbatin .grid").children("#"+window.idfullgrid)
+			window.idfullgrid+=1
+
 		$old = $('.panelmediatoshow .columns.large-5 img.media_image')
 		#First we copy the arrow to the new table cell and get the offset to the document
+		a.html("")	
 		$new = $old.clone().appendTo("#"+a.attr('id'));
 		newOffset = $new.offset();
 		#Get the old position relative to document
@@ -112,7 +126,6 @@ $(document).on 'ready page:load', ->
 		$temp = $old.clone().appendTo('body');
 		#hide new and old and move $temp to position
 		#also big z-index, make sure to edit this to something that works with the page
-
 		$temp
 			.css('position', 'absolute')
 			.css('left', oldOffset.left)
@@ -124,7 +137,7 @@ $(document).on 'ready page:load', ->
 		$old.hide();
 
 		#animate the $temp to the position of the new img
-		
+
 		$temp.animate( {'top': newOffset.top, 'left':newOffset.left, 'width':"128px", 'height':"128px"}, "slow", ->
 			#callback function, we remove $old and $temp and show $new
 			$new.show()
@@ -135,13 +148,14 @@ $(document).on 'ready page:load', ->
 				id: $new.data("media-id"),
 				origin: $new.data("origin")
 			}
-
+			 
 			success = ( text ) ->
 
 			error = (jqXHR, textStatus, errorThrown) ->
 
-			ajax1("/media/showed","POST", data, success)
+			ajax1("/media/showed","POST", data, success)			
 		)
+
 
 	showpanel  = (type, icon, user, id, origin, image, text)->
 		$(".panelmediatoshow").html("")	
@@ -172,24 +186,30 @@ $(document).on 'ready page:load', ->
 			a= $(".media_text").text().replace(hashtag, '<span style="color:#36609F;">'+hashtag+'</span>')
 		$(".media_text").html(a)
 		$(".panelmediatoshow").show()
-		#centercontent($(".panelmediatoshow .columns.large-5"), $(".media_text"),0,0)
-		#centercontent($(".panelmediatoshow .columns.large-5"), $(".media_image"),0,0)
 		centercontent($(".panelmediatoshow .columns.large-2"), $(".social"),0,0)
 		$(".panelmediatoshow").addClass("animated zoomIn")				
 
 	animatepromo = ->
+		$(".promo span").removeClass("instagram")
+		$(".promo").html("Twittea <span>#findnewroads</span>")
 		$(".promo span").addClass("twitter")
-		top= $("#151").offset().top
+		top= $("#193").offset().top
+		right = $("#193").offset().left
+		left = $("#1").offset().left
+		width = $(".promo").width()
 		$(".promo").css("top",top)
+		$(".promo").css("left",right+300)
 		$(".promo").fadeIn()
-		$(".promo").animate({'right':"4750px"}, 8000, ->
-			$(".promo span").removeClass("twitter")
-			$(".promo").html("Instagram <span>#findnewroads</span>")
-			$(".promo span").addClass("instagram")
+		
+		$(".promo").animate({'left':left-width-428}, 10000, ->
 			TimersJS.timer 2000, (delta, now) ->
-				$(".promo").animate({'right':"-492px"}, 8000, ->
+				$(".promo span").removeClass("twitter")
+				$(".promo").html("Instagram <span>#findnewroads</span>")
+				$(".promo span").addClass("instagram")
+				$(".promo").animate({'left':right+300}, 10000, ->
 					$(".promo").fadeOut()
 				)
+			
 		)
 
 
@@ -198,9 +218,9 @@ $(document).on 'ready page:load', ->
 		centercontent($(window), $(".panelmediatoshow"),-15,80)
 		$(".main_container").append("<div class='corbatin'></div>")
 		idgrid = 1
-		idgrid = buildgrid(1,11,0,4, $(".corbatin"),idgrid, "vertical_moved")
-		idgrid = buildgrid(12,23,1,11, $(".corbatin"),idgrid, "")
-		idgrid = buildgrid(23,34,0,4, $(".corbatin"),idgrid, "vertical_moved")
+		idgrid = buildgrid(1,13,0,4, $(".corbatin"),idgrid, "vertical_moved")
+		idgrid = buildgrid(13,23,1,11, $(".corbatin"),idgrid, "")
+		idgrid = buildgrid(23,35,0,4, $(".corbatin"),idgrid, "vertical_moved")
 		centercontent($(window), $(".corbatin"),-64,-128)
 		success = ( json ) ->
 			$(json).each (index,object) ->
@@ -228,10 +248,9 @@ $(document).on 'ready page:load', ->
 						
 				), ->
 					console.log "The multi timer is complete"
-					animatepromo()
+					TimersJS.timer 1000, (delta, now) ->
+						animatepromo()
 					
 			data = {}
 
 			ajax("/media/show_media.json","GET", data, success)
-		
-		#testpanel()
