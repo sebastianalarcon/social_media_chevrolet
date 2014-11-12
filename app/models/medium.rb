@@ -12,8 +12,6 @@ class Medium < ActiveRecord::Base
 			image = tweet.user.profile_image_url.to_s
 			image.slice!("_normal")
 			date = tweet.created_at
-			puts(text)
-			puts(date.to_i > last_update.to_i)
 			if(date.to_i > last_update.to_i)
 				newmedia= Medium.new(id_media:id, user:user, text:text, image_url:image, approve_state:"Por Aprobación", show_state:"No Mostrado",social_net_origin:"Twitter",media_created_at:date)
 				begin
@@ -52,7 +50,4 @@ class Medium < ActiveRecord::Base
 		puts("Save Media Method Called. Last Update: #{registry.last_registry}")
 	end
 
-	def self.testing
-		puts("Testing")
-	end
 end
