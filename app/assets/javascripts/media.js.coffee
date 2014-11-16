@@ -3,7 +3,7 @@
 # You can use CoffeeScript in this file: http://coffeescript.org/
 $(document).on 'ready page:load', ->
 	window.idfullgrid = 1
-	hashtag = "#sunny"
+	hashtag = "#findnewroads"
 	#hashtag = "#FindnewRoads"
 
 	testpanel = ->
@@ -182,8 +182,10 @@ $(document).on 'ready page:load', ->
 		)
 		if type=="twitter"
 			a= $(".media_text").text().replace(hashtag, '<span style="color:#2AB1EC;">'+hashtag+'</span>')
+			a= $(".media_text").text().replace("FindNewRoads", '<span style="color:#2AB1EC;">'+hashtag+'</span>')
 		else
 			a= $(".media_text").text().replace(hashtag, '<span style="color:#36609F;">'+hashtag+'</span>')
+			a= $(".media_text").text().replace("FindNewRoads", '<span style="color:#36609F;">'+hashtag+'</span>')
 		$(".media_text").html(a)
 		$(".panelmediatoshow").show()
 		centercontent($(".panelmediatoshow .columns.large-2"), $(".social"),0,0)
@@ -191,9 +193,8 @@ $(document).on 'ready page:load', ->
 
 	animatepromo = ->
 		$(".promo span").removeClass("instagram")
-		$(".promo").html("Twittea <span>#findnewroads</span>")
-		$(".promo span").addClass("twitter")
-		top= $("#193").offset().top
+		$(".promo").html("<img src='/assets/banner-de-twetts.jpg'>")
+		top= $("#49").offset().top
 		right = $("#193").offset().left
 		left = $("#1").offset().left
 		width = $(".promo").width()
@@ -201,12 +202,11 @@ $(document).on 'ready page:load', ->
 		$(".promo").css("left",right+300)
 		$(".promo").fadeIn()
 		
-		$(".promo").animate({'left':left-width-428}, 10000, ->
+		$(".promo").animate({'left':left-width-428}, 12000, ->
 			TimersJS.timer 2000, (delta, now) ->
 				$(".promo span").removeClass("twitter")
-				$(".promo").html("Instagram <span>#findnewroads</span>")
-				$(".promo span").addClass("instagram")
-				$(".promo").animate({'left':right+300}, 10000, ->
+				$(".promo").html("<img src='/assets/banner-de-instagram.jpg'>")
+				$(".promo").animate({'left':right+300}, 12000, ->
 					$(".promo").fadeOut()
 				)
 			

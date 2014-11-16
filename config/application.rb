@@ -20,6 +20,6 @@ module SocialMediaApp
     # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
     # config.i18n.default_locale = :de
     $first_time = true
-    $ht = "sunny"
+    $ht = "findnewroads"
   end
 end
