@@ -218,7 +218,7 @@ $(document).on 'ready page:load', ->
 
 	if window.location.pathname == "/media/show_media"
 		$(".header").remove()
-		centercontent($(window), $(".panelmediatoshow"),15,-6)
+		#centercontent($(window), $(".panelmediatoshow"),15,-6)
 		$(".main_container").append("<div class='corbatin'></div>")
 		idgrid = 1
 		idgrid = buildgrid(1,13,0,4, $(".corbatin"),idgrid, "vertical_moved")
@@ -235,6 +235,7 @@ $(document).on 'ready page:load', ->
 
 		ajax("/media/media_showed.json","GET", data, success)
 		testpanel()
+		centercontent($(".panelmediatoshow .columns.large-2"), $(".social"),0,0)
 
 		$("#startanimation").on "click", ->
 			success = ( json ) ->
