@@ -131,14 +131,14 @@ $(document).on 'ready page:load', ->
 			.css('left', oldOffset.left)
 			.css('top', oldOffset.top)
 			.css('z-index', 1000)
-			.css('width',"128px")
-			.css('height',"128px")
+			.css('width',"32px")
+			.css('height',"32px")
 		$new.hide();
 		$old.hide();
 
 		#animate the $temp to the position of the new img
 
-		$temp.animate( {'top': newOffset.top, 'left':newOffset.left, 'width':"128px", 'height':"128px"}, "slow", ->
+		$temp.animate( {'top': newOffset.top, 'left':newOffset.left, 'width':"32px", 'height':"32px"}, "slow", ->
 			#callback function, we remove $old and $temp and show $new
 			$new.show()
 			$old.remove()
@@ -182,10 +182,8 @@ $(document).on 'ready page:load', ->
 		)
 		if type=="twitter"
 			a= $(".media_text").text().replace(hashtag, '<span style="color:#2AB1EC;">'+hashtag+'</span>')
-			a= $(".media_text").text().replace("FindNewRoads", '<span style="color:#2AB1EC;">'+hashtag+'</span>')
 		else
 			a= $(".media_text").text().replace(hashtag, '<span style="color:#36609F;">'+hashtag+'</span>')
-			a= $(".media_text").text().replace("FindNewRoads", '<span style="color:#36609F;">'+hashtag+'</span>')
 		$(".media_text").html(a)
 		$(".panelmediatoshow").show()
 		centercontent($(".panelmediatoshow .columns.large-2"), $(".social"),0,0)
@@ -199,10 +197,10 @@ $(document).on 'ready page:load', ->
 		left = $("#1").offset().left
 		width = $(".promo").width()
 		$(".promo").css("top",top)
-		$(".promo").css("left",right+300)
+		$(".promo").css("left",right+50)
 		$(".promo").fadeIn()
 		
-		$(".promo").animate({'left':left-width-428}, 12000, ->
+		$(".promo").animate({'left':left-width-120}, 12000, ->
 			TimersJS.timer 2000, (delta, now) ->
 				$(".promo span").removeClass("twitter")
 				$(".promo").html("<img src='/assets/banner-de-instagram.jpg'>")
@@ -215,13 +213,13 @@ $(document).on 'ready page:load', ->
 
 	if window.location.pathname == "/media/show_media"
 		$(".header").remove()
-		centercontent($(window), $(".panelmediatoshow"),-15,80)
+		centercontent($(window), $(".panelmediatoshow"),15,-6)
 		$(".main_container").append("<div class='corbatin'></div>")
 		idgrid = 1
 		idgrid = buildgrid(1,13,0,4, $(".corbatin"),idgrid, "vertical_moved")
 		idgrid = buildgrid(13,23,1,11, $(".corbatin"),idgrid, "")
 		idgrid = buildgrid(23,35,0,4, $(".corbatin"),idgrid, "vertical_moved")
-		centercontent($(window), $(".corbatin"),-64,-128)
+		centercontent($(window), $(".corbatin"),-64,-128)		
 		success = ( json ) ->
 			$(json).each (index,object) ->
 				$("#"+(index+1)).append("<img class='media_image' src='"+object["image_url"]+"'>")
