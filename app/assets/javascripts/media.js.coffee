@@ -234,7 +234,7 @@ $(document).on 'ready page:load', ->
 		data = {}
 
 		ajax("/media/media_showed.json","GET", data, success)
-
+		testpanel()
 
 		$("#startanimation").on "click", ->
 			success = ( json ) ->
