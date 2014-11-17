@@ -94,7 +94,6 @@ $(document).on 'ready page:load', ->
 		doit = true
 		idgrid = 1
 		while doit
-			console.log idgrid
 			a = $(".corbatin .grid").children("#"+idgrid)
 			if a.children().length == 0 && idgrid<197
 				
@@ -182,8 +181,14 @@ $(document).on 'ready page:load', ->
 		)
 		if type=="twitter"
 			a= $(".media_text").text().replace(hashtag, '<span style="color:#2AB1EC;">'+hashtag+'</span>')
+			if $(".media_text").text().indexOf("#FindNewRoads") !=-1
+				a= $(".media_text").text().replace("#FindNewRoads", '<span style="color:#2AB1EC;">'+hashtag+'</span>')
+
 		else
 			a= $(".media_text").text().replace(hashtag, '<span style="color:#36609F;">'+hashtag+'</span>')
+			console.log $(".media_text").text().indexOf("#FindNewRoads") !=-1
+			if $(".media_text").text().indexOf("#FindNewRoads") !=-1
+				a= $(".media_text").text().replace("#FindNewRoads", '<span style="color:#36609F;">'+hashtag+'</span>')
 		$(".media_text").html(a)
 		$(".panelmediatoshow").show()
 		centercontent($(".panelmediatoshow .columns.large-2"), $(".social"),0,0)
