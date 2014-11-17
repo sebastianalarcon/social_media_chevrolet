@@ -130,14 +130,14 @@ $(document).on 'ready page:load', ->
 			.css('left', oldOffset.left)
 			.css('top', oldOffset.top)
 			.css('z-index', 1000)
-			.css('width',"32px")
-			.css('height',"32px")
+			.css('width',"53px")
+			.css('height',"51px")
 		$new.hide();
 		$old.hide();
 
 		#animate the $temp to the position of the new img
 
-		$temp.animate( {'top': newOffset.top, 'left':newOffset.left, 'width':"32px", 'height':"32px"}, "slow", ->
+		$temp.animate( {'top': newOffset.top, 'left':newOffset.left, 'width':"53px", 'height':"51px"}, "slow", ->
 			#callback function, we remove $old and $temp and show $new
 			$new.show()
 			$old.remove()
@@ -224,7 +224,9 @@ $(document).on 'ready page:load', ->
 		idgrid = buildgrid(1,13,0,4, $(".corbatin"),idgrid, "vertical_moved")
 		idgrid = buildgrid(13,23,1,11, $(".corbatin"),idgrid, "")
 		idgrid = buildgrid(23,35,0,4, $(".corbatin"),idgrid, "vertical_moved")
-		centercontent($(window), $(".corbatin"),-64,-128)		
+		#centercontent($(window), $(".corbatin"),-64,-128)	
+		$(".corbatin").css("top",79)
+		$(".corbatin").css("left",-48)
 		success = ( json ) ->
 			$(json).each (index,object) ->
 				$("#"+(index+1)).append("<img class='media_image' src='"+object["image_url"]+"'>")
