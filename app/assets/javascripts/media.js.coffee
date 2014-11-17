@@ -234,8 +234,6 @@ $(document).on 'ready page:load', ->
 		data = {}
 
 		ajax("/media/media_showed.json","GET", data, success)
-		testpanel()
-		centercontent($(".panelmediatoshow .columns.large-2"), $(".social"),0,0)
 
 		$("#startanimation").on "click", ->
 			success = ( json ) ->
