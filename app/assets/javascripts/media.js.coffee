@@ -227,6 +227,8 @@ $(document).on 'ready page:load', ->
 		#centercontent($(window), $(".corbatin"),-64,-128)	
 		$(".corbatin").css("top",94)
 		$(".corbatin").css("left",-84)
+		testpanel()
+		centercontent($(".panelmediatoshow .columns.large-2"), $(".social"),0,0)
 		success = ( json ) ->
 			$(json).each (index,object) ->
 				$("#"+(index+1)).append("<img class='media_image' src='"+object["image_url"]+"'>")
