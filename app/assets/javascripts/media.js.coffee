@@ -204,11 +204,11 @@ $(document).on 'ready page:load', ->
 		$(".promo").css("top",top)
 		$(".promo").css("left",right+80)
 		$(".promo").fadeIn()
-		$(".promo").animate({'left':left-width-120}, 25000, ->
+		$(".promo").animate({'left':left-width-120}, 35000, ->
 			TimersJS.timer 2000, (delta, now) ->
 				$(".promo span").removeClass("twitter")
 				$(".promo").html("<img src='/assets/banner-de-instagram.jpg'>")
-				$(".promo").animate({'left':right+300}, 25000, ->
+				$(".promo").animate({'left':right+300}, 35000, ->
 					$(".promo").fadeOut()
 				)
 			
