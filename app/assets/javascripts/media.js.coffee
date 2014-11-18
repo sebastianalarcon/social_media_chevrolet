@@ -221,9 +221,9 @@ $(document).on 'ready page:load', ->
 		#centercontent($(window), $(".panelmediatoshow"),15,-6)
 		$(".main_container").append("<div class='corbatin'></div>")
 		idgrid = 1
-		idgrid = buildgrid(1,13,0,4, $(".corbatin"),idgrid, "vertical_moved")
-		idgrid = buildgrid(13,23,1,11, $(".corbatin"),idgrid, "")
-		idgrid = buildgrid(23,35,0,4, $(".corbatin"),idgrid, "vertical_moved")
+		idgrid = buildgrid(1,14,0,4, $(".corbatin"),idgrid, "vertical_moved")
+		idgrid = buildgrid(14,24,1,11, $(".corbatin"),idgrid, "")
+		idgrid = buildgrid(24,37,0,4, $(".corbatin"),idgrid, "vertical_moved")
 		#centercontent($(window), $(".corbatin"),-64,-128)	
 		$(".corbatin").css("top",79)
 		$(".corbatin").css("left",-48)
