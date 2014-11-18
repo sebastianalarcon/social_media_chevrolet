@@ -233,7 +233,6 @@ $(document).on 'ready page:load', ->
 				$("#"+(index+1)).append("<img class='media_image' src='"+object["image_url"]+"'>")
 
 		data = {}
-		animatepromo()
 		ajax("/media/media_showed.json","GET", data, success)
 
 		$("#startanimation").on "click", ->
