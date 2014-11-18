@@ -227,7 +227,6 @@ $(document).on 'ready page:load', ->
 		#centercontent($(window), $(".corbatin"),-64,-128)	
 		$(".corbatin").css("top",94)
 		$(".corbatin").css("left",-84)
-		testpanel()
 
 		success = ( json ) ->
 			$(json).each (index,object) ->
