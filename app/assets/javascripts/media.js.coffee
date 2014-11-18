@@ -197,23 +197,23 @@ $(document).on 'ready page:load', ->
 	animatepromo = ->
 		$(".promo span").removeClass("instagram")
 		$(".promo").html("<img src='/assets/banner-de-twetts.jpg'>")
-		top= $("#49").offset().top
-		right = $("#193").offset().left
+		top= $("#143").offset().top
+		right = $("#204").offset().left
 		left = $("#1").offset().left
 		width = $(".promo").width()
 		$(".promo").css("top",top)
-		$(".promo").css("left",right+50)
+		$(".promo").css("left",right+80)
 		$(".promo").fadeIn()
-		
-		$(".promo").animate({'left':left-width-120}, 12000, ->
+		$(".promo").animate({'left':left-width-120}, 25000, ->
 			TimersJS.timer 2000, (delta, now) ->
 				$(".promo span").removeClass("twitter")
 				$(".promo").html("<img src='/assets/banner-de-instagram.jpg'>")
-				$(".promo").animate({'left':right+300}, 12000, ->
+				$(".promo").animate({'left':right+300}, 25000, ->
 					$(".promo").fadeOut()
 				)
 			
 		)
+		
 
 
 	if window.location.pathname == "/media/show_media"
@@ -233,7 +233,7 @@ $(document).on 'ready page:load', ->
 				$("#"+(index+1)).append("<img class='media_image' src='"+object["image_url"]+"'>")
 
 		data = {}
-
+		animatepromo()
 		ajax("/media/media_showed.json","GET", data, success)
 
 		$("#startanimation").on "click", ->
