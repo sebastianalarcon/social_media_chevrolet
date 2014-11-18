@@ -217,7 +217,7 @@ $(document).on 'ready page:load', ->
 
 
 	if window.location.pathname == "/media/show_media"
-		$(".main_container").css("background", "#F6BD16");
+		$(".main_container").css("background", "#464b51");
 		$(".header").remove()
 		#centercontent($(window), $(".panelmediatoshow"),15,-6)
 		$(".main_container").append("<div class='corbatin'></div>")
