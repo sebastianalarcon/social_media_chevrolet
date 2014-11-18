@@ -225,8 +225,8 @@ $(document).on 'ready page:load', ->
 		idgrid = buildgrid(14,24,1,11, $(".corbatin"),idgrid, "")
 		idgrid = buildgrid(24,37,0,4, $(".corbatin"),idgrid, "vertical_moved")
 		#centercontent($(window), $(".corbatin"),-64,-128)	
-		$(".corbatin").css("top",79)
-		$(".corbatin").css("left",-48)
+		$(".corbatin").css("top",94)
+		$(".corbatin").css("left",-84)
 		success = ( json ) ->
 			$(json).each (index,object) ->
 				$("#"+(index+1)).append("<img class='media_image' src='"+object["image_url"]+"'>")
