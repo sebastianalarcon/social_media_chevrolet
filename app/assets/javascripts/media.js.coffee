@@ -95,10 +95,10 @@ $(document).on 'ready page:load', ->
 		idgrid = 1
 		while doit
 			a = $(".corbatin .grid").children("#"+idgrid)
-			if a.children().length == 0 && idgrid<197
+			if a.children().length == 0 && idgrid<205
 				
 				doit = false
-			else if a.children().length == 0 && idgrid >= 197
+			else if a.children().length == 0 && idgrid >= 205
 				a = "Full"
 				doit = false
 			idgrid+=1
@@ -107,7 +107,7 @@ $(document).on 'ready page:load', ->
 	animatephoto = ->
 		a= findemptygrid()
 		if a == "Full"
-			if window.idfullgrid == 197
+			if window.idfullgrid == 205
 				window.idfullgrid = 1
 			
 			a = $(".corbatin .grid").children("#"+window.idfullgrid)
